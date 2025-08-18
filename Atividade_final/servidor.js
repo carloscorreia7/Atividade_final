@@ -71,7 +71,7 @@ app.post("/cadastro", async (req, res) => {
             },
             (err) => {
               if (err) {
-                return res.status(500).json({ msg: "Erro ao enviar e-mail", err });
+                return res.json({ msg: "Erro ao enviar e-mail", err });
               }
               res.json({ msg: "Usuário cadastrado! Verifique seu e-mail." });
             });
@@ -87,7 +87,7 @@ app.post("/verificar-email", async (req, res) => {
 
   db.query("SELECT * FROM tb_usuarios WHERE Email = ?", [email], async (erro, results) => {
     if (erro) return res.json({ msg: "Erro no servidor", erro });
-    if (results.length === 0) return res.status(400).json({ msg: "Usuário não encontrado" });
+    if (results.length === 0) return res.json({ msg: "Usuário não encontrado" });
 
     const usuario = results[0];
 
@@ -131,6 +131,11 @@ app.post('/logar', (req, res) => {
       }
 
       const usuario = results[0];
+
+      if (usuario.verificado === 0) {
+      return res.json({ msg: "Confirme seu e-mail antes de fazer login." });
+      }
+
       try {
         const senhaValida = await bcrypt.compare(senha, usuario.Senha);
         if (!senhaValida) {
@@ -145,6 +150,59 @@ app.post('/logar', (req, res) => {
       }
     })
 })//fim do endpoint /logar
+
+// endpoint para pedir novo código
+app.post("/novo-codigo", async (req, res) => {
+  const { email } = req.body;
+
+  db.query("SELECT * FROM tb_usuarios WHERE Email = ?", [email], async (erro, results) => {
+    if (erro) return res.json({ msg: "Erro no servidor", erro });
+    if (results.length === 0) return res.json({ msg: "Usuário não encontrado" });
+
+    const usuario = results[0];
+
+    if (usuario.verificado === 1) {
+      return res.json({ msg: "Usuário já verificado, não precisa de novo código." });
+    }
+
+    // Gerar novo código
+    const codigo = crypto.randomInt(100000, 999999).toString();
+    const hashCodigo = await bcrypt.hash(codigo, 10);
+    const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
+
+    // Atualizar no banco
+    db.query(
+      "UPDATE tb_usuarios SET codigo_verificacao = ?, codigo_expira_em = ? WHERE Email = ?",
+      [hashCodigo, expiraEm, email],
+      (err2) => {
+        if (err2) return res.json({ msg: "Erro ao gerar novo código", err2 });
+
+        const htmlMensagem = `
+          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+            <h2 style="color: #2E86C1;">Olá ${usuario.Nome_completo}!</h2>
+            <p>Seu novo código de verificação é:</p>
+            <p style="font-size: 24px; font-weight: bold; color: #E67E22;">${codigo}</p>
+            <p>Ele expira em <strong>15 minutos</strong>. ⏰</p>
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;" />
+            <p style="font-size: 12px; color: #999;">Se você não solicitou este código, ignore este e-mail.</p>
+          </div>
+        `;
+
+        transporter.sendMail(
+          {
+            from: "calma air <ventiladorescalmarair@gmail.com>",
+            to: email,
+            subject: "Novo código de verificação",
+            html: htmlMensagem
+          },
+          (err3) => {
+            if (err3) return res.json({ msg: "Erro ao enviar e-mail", err3 });
+            res.json({ msg: "Novo código enviado para seu e-mail." });
+          }
+        );
+      });
+  });
+});// fim do endpoint /novo-codigo
 
 
 function verificarAutenticado(req, res, next) {
