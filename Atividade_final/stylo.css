@@ -7,11 +7,11 @@ body{
 
 #topo1{
     display: flex;
-    background-color: rgb(31, 31, 111);
+   background: linear-gradient(90deg, #1e3c72, #2a5298);
     color: white;
 }
 #topo1 i{
-    margin-top: 13px;
+    margin-top: 5px;
     margin-left: 40px;
     font-size: 14px;
 }
@@ -21,62 +21,81 @@ body{
     gap: 50px;
     color: white;
     font-size: 14px;
+    margin-top: 5px;
 }
 #topotodo img{
     margin-left: 200px;
     width: 300px;
     height: 300px;
+    
 }
-#topotodo{ 
-    display: flex;
- 
+#topotodo{
+  align-items: center;
+  display: flex;
+  gap: 20px;
 }
-#topo3{
-    padding: 120px;
-    display: flex;
-}
-#topo3 input{
-     width: 350px;
-    height: 40px;
-    border-radius: 5px 5px 5px 5px;
-  border: 2px solid aliceblue; 
+#topotodo button{
+  background: transparent;
+  color: #3498db;
+  padding: 12px 24px;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 180px;
+  height: 50px;
   outline: none;
 }
 
-
-#topo3 i{
-    margin-top: 10px;
-    margin-left: 3px;
-    font-size: 20px;
-   
+#topotodo button:hover {
+  background: #3498db;
+  color: white;
 }
-
-
+#topo3 input{
+ width: 350px;
+height: 40px;
+border-radius: 5px 5px 5px 5px;
+border: 2px solid aliceblue; 
+outline: none;
+}
 #topo3 button{
     border: none;
-    background-color:  #4A90E2;;
+    background-color:  aliceblue;;
     border-radius: 5px 5px 5px 5px;
     width: 50px;
-    height: 45px;
+    height: 40px;
+    outline: none;
+    cursor: pointer;
+}
+#topo3{
+  align-items: center;
+  text-align: center;
+  display: flex;
+}
+#texto_preto{
+  color: black;
 }
 
-#topo9{
-    display: flex;
-    gap: 20px;
-    margin-top: 3px;
-    margin-left: 90px;
-    font-size: 100px;
-}
 #barra{
-    font-size: 15px;
+    font-size: 18px;
     display: flex;
     gap: 30px;
     margin: 5px;
-      background-color:  white; 
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+     border-radius: 10px 10px 10px 10px;
+     text-align: center;
+     height: 55px;
+     text-align: center;
+     align-items: center;
+
+}
+#barra p{
+    color: #F5F5F5;
+   margin-left: 10px;
 }
 #imagem_topo img{
     width: 210vh;
-    height: 30vw;
+    height: 40vw;
    background-position: center;
 }
 #topo_baixo{
@@ -86,19 +105,228 @@ body{
     align-items: flex-start;
     margin: 15px;
     gap: 30px;
-    background-color:  #4A90E2;;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  color: #F5F5F5;
+  border-radius: 10px 10px 10px 10px
    
 }
 
 #imagem_topo2 img{
-     
-    width: 500px;
-    height: 500px;
+     margin-bottom: 100px;
+    width: 900px;
+    height: 300px;
 }
 #imagem_topo2{
-    
-    
+    margin: 15px;
     display: flex;
-   
+    gap: 50px;
+}
+.topo-baixo{
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+     
+}
+.topocima input{
+  
+   display: flex;
+
+}
+#texto_branco{
+  color: white;
+}
+.cadastro-container {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
 }
 
+.cadastro-container h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-field:focus {
+  border-color: #009ee0;
+  box-shadow: 0 0 6px rgba(0, 158, 224, 0.4);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #009ee0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #008cc7;
+}
+
+.footer-text {
+  font-size: 13px;
+  color: #555;
+  margin-top: 15px;
+}
+
+.footer-text a {
+  color: #009ee0;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+#tela_escura{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  display: flex;    
+  justify-content: center;      
+  align-items: center;
+}
+.login-container {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-field:focus {
+  border-color: #009ee0;
+  box-shadow: 0 0 6px rgba(0, 158, 224, 0.4);
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #009ee0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #008cc7;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+}
+
+.divider span {
+  margin: 0 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.social-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.social-btn:hover {
+  background: #f1f1f1;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #777;
+  margin-top: 15px;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+.fechar_cadastro,.fechar_login{
+  display: flex;
+  justify-content: right;
+  margin-top: -10%;
+  cursor: pointer;
+  border-color: black;
+}

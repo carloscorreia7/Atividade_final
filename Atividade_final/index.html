@@ -10,10 +10,13 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="stylo.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    
 </head>
 <body>
     <div id="topo1">
-        <i class="fi fi-br-lock"> Bem vindo à Loja Oficial da CalmaAir! </i>
+        <i class="fi fi-br-lock"> Bem vindo à Loja Oficial da <span id="texto_preto"> CalmaAir! </i></span>
         <div id="topo2">
         <p>Rastreie seu Pedido</p>
         <p>Assistência Técnica</p>
@@ -24,28 +27,52 @@
     <div id="topotodo">
         <img src="ChatGPT Image 16 de ago. de 2025, 16_59_43.png" alt="">
         <div id="topo3">
-          <input type="text" placeholder="o que você está buscando">
-           <button><label for="buscar"><i class="fi fi-bs-search"></i></label></button>
-           <div id="topo9">
-            <i class="fi fi-ss-circle-phone-flip"> Entre em Contato </i>
-            <i class="fi fi-ss-user"> Minha Conta </i>
-            <i class="fi fi-sr-shopping-cart"></i>
+            <input type="text" placeholder="o que você está buscando">
+            <button><label for="buscar"><i class="fi fi-bs-search"></i></label></button>
+        </div>
+        <button id="login_formulario">Minha conta</button>
+        <button id="cadastro_formulario">Cadastre-se</button>
+        <button id="carrinho">carrinho</button>
+    </div>
+        
+     <div id="barra">
+        <p>Ventiladores de mesa</p>
+        <p>Ventiladores de torre</p>
+        <p>Ventiladores de parede</p>
+        <p>Ventiladores de teto</p>
+        <p>Ventiladores portáteis ou de bolso</p>
+        <p>Ventiladores inteligentes / conectados</p> 
+     </div>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10266516.jpg" alt="Primeiro Slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10265829-m.jpg"
+                        alt="Segundo Slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10266510-m.jpg"
+                        alt="Terceiro Slide">
+                </div>
             </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Próximo</span>
+            </a>
         </div>
     </div>
-     <div id="barra">
-        <h3>Ventiladores de mesa</h3>
-        <h3>Ventiladores de torre</h3>
-        <h3>Ventiladores de parede</h3>
-        <h3>Ventiladores de teto</h3>
-        <h3>Ventiladores portáteis ou de bolso</h3>
-        <h3>Ventiladores inteligentes / conectados</h3> <br> <br> 
-     </div>
-      <div id="imagem_topo">
-         <img src="imagem_topo.png" alt=""> 
-    </div>
     <div id="topo_baixo">
-
         <div id="entrega">
         <i class="fi fi-ss-map-marker"> ENTREGA GARANTIDA </i>
          <p>Para todo o Brasil</p>
@@ -66,11 +93,122 @@
          <p>Super Exclusivos</p>
          </div>
     </div>
-
     <div id="imagem_topo2">
         <img src="Gemini_Generated_Image_4gfa374gfa374gfa.jpeg" alt="">
         <img src="Captura de tela 2025-08-16 213811.png" alt="">
     </div>
-    
+    <div id="produtos1">
+       <h2 class="titulo">Mais Vendidos</h2>
+    </div>
+    <div id="produtos">
+   <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="ventilador.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <center><h5 class="card-title">Refrigerador de ar usb portátil, ventilador elétrico sem folhas, temporizador silencioso de 6 velocidades, ventilador de refrigeração, umidificador, ventilador de condicionamento</h5>
+                <p class="card-text">
+                    R$335
+                    12x R$32
+                </p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="5-main-ventilador-eletrico-sem-folhas-portatil-refrigerador-de-ar-temporizador-silencioso-ar-condicionado-ventilador-umidificador-desktop-condicionado-fas-6-velocidade_800x.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <center><h5 class="card-title">Ventilador e Umidificador - Torre Portátil sem Hélices 2024</h5>
+                <p class="card-text">R$ 429,90
+                     12x R$52,22
+                </p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="D_Q_NP_2X_727104-MLB83958446298_052025-R.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <center><h5 class="card-title">Ventilador Sem Pás De 3velocidades Com Rotação 106°e Luz Led</h5>
+                <p class="card-text">R$335
+                    12x R$32</p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+    </div>
+    <div id="produtos">
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="ventilador1.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <center><h5 class="card-title">Ventilador de torre sem lâmina com modos de aquecimento/resfriamento, </h5>
+                <p class="card-text">R$307,66</p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="shopping.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <center><h5 class="card-title">Sistema de resfriamento de torre 3 em 1 com umidificador, purificador de ar</h5>
+                <p class="card-text">R$203,99</p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="miniventiladorsemheliceblack.webp" alt="Imagem de capa do card">
+            <div class="card-body">
+                <br>
+                <center><h5 class="card-title">Mini Ventilador Sem Hélice Portátil Recarregável Usb</h5>
+                <p class="card-text">R$ 44,99</p>
+              <button type="button" class="btn btn-success">Comprar</button></center>
+            </div>
+          </div>
+    </div>
+
+  <div class="topo-baixo">
+    <h2>NEWSLETTER <span>CalmaAir</span></h2> 
+    <p>Inscreva-se para receber as Novidades e Promoções</p><br> <br>
+    <div class="topocima">
+            <input type="email" placeholder="Email">
+            <button type="submit">Cadastrar</button>
+    </div>
+  </div>
+  <div id="tela_escura">
+    <div class="login-container">
+      <div class="fechar_login">❌</div>
+      <h2>Identifique-se</h2>
+      <form>
+        <input type="text" class="input-field" placeholder="E-mail ">
+        <input type="text" class="input-field" placeholder="Senha">
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <p class="footer-text">
+        Ao entrar, você concorda com nossa <a href="#">política de privacidade</a>.
+      </p>
+    </div>
+    <div class="cadastro-container">
+      <div class="fechar_cadastro">❌</div>
+      <h2>Crie sua conta</h2>
+      <form>
+        <input type="text" class="input-field" id="nome" placeholder="Nome completo" required>
+        <input type="date" class="input-field" id="dataNascimento" required>
+        <input type="text" class="input-field" id="cpf" placeholder="CPF" maxlength="14" required>
+        <input type="tel" class="input-field" id="telefone" placeholder="(99) 99999-9999" required>
+        <input type="email" class="input-field" id="email" placeholder="E-mail" required>
+        <input type="password" class="input-field" id="senha" placeholder="Senha" required>
+        <input type="password" class="input-field" id="senha2" placeholder="Confirme a senha" required>
+        <button type="submit" class="btn">Cadastrar</button>
+      </form>
+  
+      <p class="footer-text">
+        Já tem uma conta? <a href="#formulario_login">Entrar</a>
+      </p>
+    </div>
+  <script src="funcoes.js"></script>
 </body>
-</html>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</html
