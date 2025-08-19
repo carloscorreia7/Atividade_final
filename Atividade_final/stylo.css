@@ -13,6 +13,7 @@ body {
     overflow-x: hidden;
 }
 
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -21,7 +22,7 @@ body {
 
 /* Header Superior */
 .top-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, blue 75%, black 100%);
     color: white;
     padding: 8px 0;
     font-size: 14px;
@@ -100,6 +101,10 @@ body {
     border: none;
     outline: none;
     font-size: 16px;
+}
+
+#products-section{
+    outline: none;
 }
 
 .search-btn {
@@ -188,7 +193,7 @@ body {
 
 /* Navegação */
 .main-nav {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, blue 75%, black 100%);
     padding: 15px 0;
 }
 
@@ -223,7 +228,7 @@ body {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, black 10%, blue 100%);
     padding: 80px 0;
     display: flex;
     align-items: center;
@@ -306,7 +311,7 @@ body {
     text-align: center;
     padding: 30px 20px;
     border-radius: 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, blue 0%, black 100%);
     color: white;
     transition: transform 0.3s;
 }
@@ -392,6 +397,7 @@ body {
 
 .product-info {
     padding: 25px;
+
 }
 
 .product-title {
@@ -449,7 +455,7 @@ body {
 
 /* Newsletter */
 .newsletter-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, blue 0%, black 100%);
     padding: 80px 0;
     text-align: center;
     color: white;
@@ -1757,6 +1763,112 @@ input:focus {
 .btn-checkout-confirm i {
     font-size: 1.2rem;
 }
+
+footer {
+    background: #f9f9f9;
+    padding: 40px 60px 20px;
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .footer-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.2fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .footer-logo img {
+    width: 160px;
+    margin-bottom: 10px;
+  }
+  
+  .footer-logo p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .footer-logo .contact {
+    margin: 15px 0;
+  }
+  
+  .footer-logo .contact p {
+    margin: 5px 0;
+  }
+  
+  .footer-column h4,
+  .certificados h4 {
+    font-size: 15px;
+    margin-bottom: 15px;
+    color: #004080;
+  }
+  
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-column ul li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-column ul li a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .footer-column ul li a:hover {
+    color: #0077c2;
+  }
+  
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .social-icons a img {
+    width: 24px;
+    margin-right: 8px;
+  }
+  
+  .certificados img {
+    display: block;
+    margin-bottom: 12px;
+    max-width: 140px;
+  }
+  
+  .footer-payments {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 15px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .footer-payments img {
+    height: 35px;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .footer-bottom img {
+    height: 25px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
 
 /* Responsive */
 @media (max-width: 768px) {
