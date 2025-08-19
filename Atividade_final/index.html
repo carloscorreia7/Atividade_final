@@ -54,11 +54,13 @@
                 </div>
             </div>
             
-            <div class="user-actions">
-                <button id="login-btn" class="btn-outline">
-                    <i class="fi fi-br-user"></i>
-                    <span class="btn-text">Minha Conta</span>
-                </button>
+            <div class="user-actions header-actions">
+                <div style="position: relative;">
+                    <button id="login-btn" class="btn-outline">
+                        <i class="fi fi-br-user"></i>
+                        <span class="btn-text">Minha Conta</span>
+                    </button>
+                </div>
                 <button id="register-btn" class="btn-primary">
                     <i class="fi fi-br-user-add"></i>
                     <span class="btn-text">Cadastre-se</span>
@@ -132,16 +134,6 @@
         </div>
     </section>
 
-    <!-- Produtos -->
-    <section class="products-section">
-        <div class="container">
-            <h2 class="section-title">Mais Vendidos</h2>
-            <div id="products-grid" class="products-grid">
-                <!-- Produtos serão carregados via JavaScript -->
-            </div>
-        </div>
-    </section>
-
     <!-- Newsletter -->
     <section class="newsletter-section">
         <div class="container">
@@ -151,6 +143,200 @@
                 <div class="newsletter-form">
                     <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" required>
                     <button type="button" class="btn-newsletter">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos -->
+    <section class="products-section">
+       
+    </section>
+
+    <!-- Seção de Produtos -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">Mais Vendidos</h2>
+            <div id="products-grid" class="products-grid">
+                <!-- Produtos serão carregados via JavaScript -->
+            </div>
+            <div class="section-header">
+                <p>Ventiladores sem hélice com tecnologia de ponta</p>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Produto 1 - Ventilador Torre Premium -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Torre Premium">
+                        <div class="product-badge">Novo</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Torre Premium</h3>
+                        <p class="product-description">Ventilador sem hélice com tecnologia de multiplicação de ar, controle remoto e 10 velocidades.</p>
+                        <div class="product-features">
+                            <span class="feature">Silencioso</span>
+                            <span class="feature">Controle Remoto</span>
+                            <span class="feature">10 Velocidades</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 899,90</span>
+                            <span class="price-current">R$ 749,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="1" 
+                                data-nome="CalmaAir Torre Premium" 
+                                data-preco="749.90" 
+                                data-imagem="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produto 2 - Ventilador Mesa Compacto -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Mesa Compacto">
+                        <div class="product-badge bestseller">Mais Vendido</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Mesa Compacto</h3>
+                        <p class="product-description">Ventilador de mesa sem hélice, perfeito para escritórios e ambientes pequenos.</p>
+                        <div class="product-features">
+                            <span class="feature">Compacto</span>
+                            <span class="feature">Econômico</span>
+                            <span class="feature">Design Moderno</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 549,90</span>
+                            <span class="price-current">R$ 449,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="2" 
+                                data-nome="CalmaAir Mesa Compacto" 
+                                data-preco="449.90" 
+                                data-imagem="https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produto 3 - Ventilador Torre Duplo -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Torre Duplo">
+                        <div class="product-badge premium">Premium</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Torre Duplo</h3>
+                        <p class="product-description">Ventilador duplo sem hélice com potência máxima e controle inteligente via app.</p>
+                        <div class="product-features">
+                            <span class="feature">Dupla Potência</span>
+                            <span class="feature">App Control</span>
+                            <span class="feature">WiFi</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 1.299,90</span>
+                            <span class="price-current">R$ 999,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="3" 
+                                data-nome="CalmaAir Torre Duplo" 
+                                data-preco="999.90" 
+                                data-imagem="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produto 4 - Ventilador Portátil -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Portátil">
+                        <div class="product-badge">Lançamento</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Portátil</h3>
+                        <p class="product-description">Ventilador portátil sem hélice com bateria recarregável e design ultra compacto.</p>
+                        <div class="product-features">
+                            <span class="feature">Bateria 8h</span>
+                            <span class="feature">USB-C</span>
+                            <span class="feature">Ultra Leve</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 299,90</span>
+                            <span class="price-current">R$ 249,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="4" 
+                                data-nome="CalmaAir Portátil" 
+                                data-preco="249.90" 
+                                data-imagem="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produto 5 - Ventilador Smart Pro -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Smart Pro">
+                        <div class="product-badge smart">Smart</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Smart Pro</h3>
+                        <p class="product-description">Ventilador inteligente com sensores de temperatura, controle por voz e programação automática.</p>
+                        <div class="product-features">
+                            <span class="feature">Alexa/Google</span>
+                            <span class="feature">Sensor Temp</span>
+                            <span class="feature">Auto Program</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 1.599,90</span>
+                            <span class="price-current">R$ 1.299,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="5" 
+                                data-nome="CalmaAir Smart Pro" 
+                                data-preco="1299.90" 
+                                data-imagem="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produto 6 - Ventilador Eco -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Ventilador Eco">
+                        <div class="product-badge eco">Eco</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>CalmaAir Eco</h3>
+                        <p class="product-description">Ventilador econômico sem hélice com baixo consumo de energia e design sustentável.</p>
+                        <div class="product-features">
+                            <span class="feature">Baixo Consumo</span>
+                            <span class="feature">Sustentável</span>
+                            <span class="feature">Garantia 3 Anos</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="price-old">R$ 399,90</span>
+                            <span class="price-current">R$ 329,90</span>
+                        </div>
+                        <button class="btn-add-cart add-to-cart" 
+                                data-id="6" 
+                                data-nome="CalmaAir Eco" 
+                                data-preco="329.90" 
+                                data-imagem="https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80">
+                            <i class="fi fi-br-shopping-cart-add"></i>
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,10 +376,16 @@
                     <input type="text" id="register-name" placeholder="Nome completo" required>
                 </div>
                 <div class="input-group">
-                    <input type="email" id="register-email" placeholder="E-mail" required>
+                    <input type="date" id="register-birth" placeholder="Data de nascimento" required>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="register-cpf" placeholder="CPF" required>
                 </div>
                 <div class="input-group">
                     <input type="tel" id="register-phone" placeholder="Telefone" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="register-email" placeholder="E-mail" required>
                 </div>
                 <div class="input-group">
                     <input type="password" id="register-password" placeholder="Senha" required>
@@ -255,6 +447,7 @@
     <div id="notification" class="notification"></div>
 
     <!-- Scripts -->
-    <script src="funcoes.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="carrinho-offline.js"></script>
 </body>
 </html>

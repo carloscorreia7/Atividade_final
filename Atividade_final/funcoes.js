@@ -1,657 +1,528 @@
-// Produtos de ventiladores sem hélice
-const produtos = [
-    {
-        id: 1,
-        nome: "Ventilador Sem Hélice Torre Premium",
-        preco: 899.90,
-        parcelas: "12x R$ 74,99",
-        imagem: "ChatGPT Image 16 de ago. de 2025, 16_59_43.png",
-        descricao: "Ventilador de torre sem hélice com tecnologia de multiplicação de ar, 10 velocidades e controle remoto"
-    },
-    {
-        id: 2,
-        nome: "Ventilador Sem Hélice Portátil USB",
-        preco: 299.90,
-        parcelas: "12x R$ 24,99",
-        imagem: "Gemini_Generated_Image_4gfa374gfa374gfa.jpeg",
-        descricao: "Ventilador portátil sem hélice, recarregável via USB, silencioso e com 3 velocidades"
-    },
-    {
-        id: 3,
-        nome: "Ventilador Sem Hélice de Mesa Inteligente",
-        preco: 599.90,
-        parcelas: "12x R$ 49,99",
-        imagem: "Captura de tela 2025-08-16 213811.png",
-        descricao: "Ventilador de mesa sem hélice com controle por app, timer e função purificador de ar"
-    },
-    {
-        id: 4,
-        nome: "Ventilador Sem Hélice Compacto",
-        preco: 199.90,
-        parcelas: "12x R$ 16,66",
-        imagem: "imagem_topo.png",
-        descricao: "Ventilador compacto sem hélice, ideal para escritório, com design moderno e 5 velocidades"
-    },
-    {
-        id: 5,
-        nome: "Ventilador Sem Hélice Torre Pro",
-        preco: 1299.90,
-        parcelas: "12x R$ 108,33",
-        imagem: "ChatGPT Image 16 de ago. de 2025, 16_59_43.png",
-        descricao: "Ventilador de torre profissional sem hélice, com aquecimento, resfriamento e purificação do ar"
-    },
-    {
-        id: 6,
-        nome: "Ventilador Sem Hélice Mini",
-        preco: 149.90,
-        parcelas: "12x R$ 12,49",
-        imagem: "Gemini_Generated_Image_4gfa374gfa374gfa.jpeg",
-        descricao: "Mini ventilador sem hélice para uso pessoal, bateria de longa duração e ultra silencioso"
-    }
-];
+// Sistema Híbrido - Carrinho Offline + Backend para Usuários
+// Estado global da aplicação
+let usuarioLogado = false;
+let dadosUsuario = null;
+let carrinho = [];
+let totalCarrinho = 0;
 
-// Variáveis globais
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-let usuarioLogado = JSON.parse(localStorage.getItem('usuario')) || null;
-
-// Inicialização
+// Inicialização quando o documento estiver pronto
 $(document).ready(function() {
-    carregarProdutos();
-    atualizarContadorCarrinho();
-    verificarUsuarioLogado();
-    configurarEventos();
+    verificarStatusLogin();
+    carregarCarrinho();
+    inicializarEventos();
 });
 
-// Carregar produtos na página
-function carregarProdutos() {
-    const grid = $('#products-grid');
-    grid.empty();
-    
-    produtos.forEach(produto => {
-        const produtoHTML = `
-            <div class="product-card" data-id="${produto.id}">
-                <img src="${produto.imagem}" alt="${produto.nome}" class="product-image">
-                <div class="product-info">
-                    <h3 class="product-title">${produto.nome}</h3>
-                    <div class="product-price">
-                        <span class="price-main">R$ ${produto.preco.toFixed(2).replace('.', ',')}</span>
-                        <span class="price-installments">${produto.parcelas}</span>
-                    </div>
-                    <button class="btn-add-cart" onclick="adicionarAoCarrinho(${produto.id})">
-                        <i class="fi fi-br-shopping-cart"></i>
-                        Adicionar ao Carrinho
-                    </button>
-                </div>
-            </div>
-        `;
-        grid.append(produtoHTML);
-    });
-}
-
-// Sistema de Carrinho
-function adicionarAoCarrinho(produtoId) {
-    const produto = produtos.find(p => p.id === produtoId);
-    const itemExistente = carrinho.find(item => item.id === produtoId);
-    
-    if (itemExistente) {
-        itemExistente.quantidade += 1;
-    } else {
-        carrinho.push({
-            ...produto,
-            quantidade: 1
-        });
-    }
-    
-    salvarCarrinho();
-    atualizarContadorCarrinho();
-    atualizarCarrinho();
-    mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`, 'success');
-}
-
-function removerDoCarrinho(produtoId) {
-    carrinho = carrinho.filter(item => item.id !== produtoId);
-    salvarCarrinho();
-    atualizarContadorCarrinho();
-    atualizarCarrinho();
-}
-
-function alterarQuantidade(produtoId, novaQuantidade) {
-    const item = carrinho.find(item => item.id === produtoId);
-    if (item) {
-        if (novaQuantidade <= 0) {
-            removerDoCarrinho(produtoId);
-        } else {
-            item.quantidade = novaQuantidade;
-            salvarCarrinho();
-            atualizarContadorCarrinho();
-            atualizarCarrinho();
-        }
-    }
-}
-
-function calcularTotal() {
-    return carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
-}
-
-function salvarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
-
-function atualizarContadorCarrinho() {
-    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
-    const contador = $('#cart-counter');
-    
-    contador.text(totalItens);
-    if (totalItens > 0) {
-        contador.addClass('show');
-    } else {
-        contador.removeClass('show');
-    }
-}
-
-function atualizarCarrinho() {
-    const carrinhoItens = $('#cart-items');
-    const carrinhoTotal = $('#cart-total');
-    
-    carrinhoItens.empty();
-    
-    if (carrinho.length === 0) {
-        carrinhoItens.html('<p class="cart-empty">Seu carrinho está vazio</p>');
-        carrinhoTotal.text('R$ 0,00');
-        return;
-    }
-    
-    carrinho.forEach(item => {
-        const itemHTML = `
-            <div class="cart-item">
-                <img src="${item.imagem}" alt="${item.nome}" class="cart-item-image">
-                <div class="cart-item-info">
-                    <h6 class="cart-item-title">${item.nome}</h6>
-                    <p class="cart-item-price">R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
-                    <div class="quantity-controls">
-                        <button onclick="alterarQuantidade(${item.id}, ${item.quantidade - 1})" class="qty-btn">-</button>
-                        <span class="quantity">${item.quantidade}</span>
-                        <button onclick="alterarQuantidade(${item.id}, ${item.quantidade + 1})" class="qty-btn">+</button>
-                    </div>
-                </div>
-                <button onclick="removerDoCarrinho(${item.id})" class="remove-item">
-                    <i class="fi fi-br-trash"></i>
-                </button>
-            </div>
-        `;
-        carrinhoItens.append(itemHTML);
-    });
-    
-    carrinhoTotal.text(`R$ ${calcularTotal().toFixed(2).replace('.', ',')}`);
-}
-
-// Sistema de Notificações
-function mostrarNotificacao(mensagem, tipo = 'success') {
-    const notification = $('#notification');
-    notification.removeClass('show error');
-    
-    if (tipo === 'error') {
-        notification.addClass('error');
-    }
-    
-    notification.text(mensagem);
-    notification.addClass('show');
-    
-    setTimeout(() => {
-        notification.removeClass('show');
-    }, 3000);
-}
-
-// Sistema de Login/Cadastro
-function verificarUsuarioLogado() {
-    if (usuarioLogado) {
-        $('#login-btn .btn-text').text(`Olá, ${usuarioLogado.nome.split(' ')[0]}`);
-        $('#login-btn').off('click').on('click', logout);
-    }
-}
-
-function login(email, senha) {
+// Verificar se usuário está logado
+function verificarStatusLogin() {
     $.ajax({
-        url: '/logar',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ email, senha }),
+        url: '/verificar-login',
+        method: 'GET',
         success: function(response) {
-            if (response.msg === "Login bem-sucedido") {
-                usuarioLogado = response.usuario;
-                localStorage.setItem('usuario', JSON.stringify(usuarioLogado));
-                $('#login-modal').removeClass('show');
-                verificarUsuarioLogado();
-                mostrarNotificacao('Login realizado com sucesso!', 'success');
+            if (response.logado) {
+                usuarioLogado = true;
+                dadosUsuario = response.usuario;
+                carregarCarrinhoServidor();
             } else {
-                mostrarNotificacao(response.msg, 'error');
+                usuarioLogado = false;
+                dadosUsuario = null;
+                carregarCarrinhoLocal();
             }
+            atualizarInterfaceUsuario();
         },
-        error: function(xhr) {
-            const erro = xhr.responseJSON?.msg || 'Erro ao fazer login';
-            mostrarNotificacao(erro, 'error');
+        error: function() {
+            // Se não conseguir conectar com servidor, usar modo offline
+            usuarioLogado = false;
+            dadosUsuario = null;
+            carregarCarrinhoLocal();
+            atualizarInterfaceUsuario();
         }
     });
 }
 
-function cadastrar(dados) {
-    // Ajustar dados para o formato esperado pelo servidor
-    const dadosServidor = {
-        nome_completo: dados.nome,
-        data_nascimento: '1990-01-01', // Valor padrão, pode ser ajustado
-        cpf: '000.000.000-00', // Valor padrão, pode ser ajustado
-        telefone: dados.telefone,
-        email: dados.email,
-        senha: dados.senha
-    };
-    
+// Carregar carrinho do localStorage (modo offline)
+function carregarCarrinhoLocal() {
+    const carrinhoSalvo = localStorage.getItem('carrinho');
+    if (carrinhoSalvo) {
+        carrinho = JSON.parse(carrinhoSalvo);
+    }
+    calcularTotalCarrinho();
+    atualizarContadorCarrinho();
+}
+
+// Carregar carrinho do servidor (quando logado)
+function carregarCarrinhoServidor() {
     $.ajax({
-        url: '/cadastro',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(dadosServidor),
+        url: '/carrinho/listar',
+        method: 'GET',
         success: function(response) {
-            $('#register-modal').removeClass('show');
-            mostrarNotificacao('Cadastro realizado! Verifique seu e-mail para confirmar.', 'success');
-            // Mostrar modal de verificação
-            mostrarModalVerificacao(dados.email);
+            carrinho = response.carrinho || [];
+            calcularTotalCarrinho();
+            atualizarContadorCarrinho();
         },
-        error: function(xhr) {
-            const erro = xhr.responseJSON?.msg || 'Erro ao cadastrar';
-            mostrarNotificacao(erro, 'error');
+        error: function() {
+            console.log('Erro ao carregar carrinho do servidor');
+            carregarCarrinhoLocal();
         }
     });
 }
 
-function logout() {
-    usuarioLogado = null;
-    localStorage.removeItem('usuario');
-    $('#login-btn .btn-text').text('Minha Conta');
-    $('#login-btn').off('click').on('click', () => $('#login-modal').addClass('show'));
-    mostrarNotificacao('Logout realizado com sucesso!', 'success');
-}
-
-// Finalizar compra
-function finalizarCompra() {
-    if (!usuarioLogado) {
-        mostrarNotificacao('Faça login para finalizar a compra', 'error');
-        $('#login-modal').addClass('show');
-        return;
-    }
-    
-    if (carrinho.length === 0) {
-        mostrarNotificacao('Seu carrinho está vazio!', 'error');
-        return;
-    }
-    
-    const total = calcularTotal();
-    const confirmacao = confirm(`Finalizar compra no valor de R$ ${total.toFixed(2).replace('.', ',')}?`);
-    
-    if (confirmacao) {
-        // Aqui você pode enviar os dados da compra para o servidor
-        const dadosCompra = {
-            usuario: usuarioLogado.id,
-            itens: carrinho,
-            total: total,
-            data: new Date().toISOString()
-        };
-        
-        // Simular processamento da compra
-        setTimeout(() => {
-            carrinho = [];
-            salvarCarrinho();
-            atualizarContadorCarrinho();
-            atualizarCarrinho();
-            $('#cart-sidebar').removeClass('show');
-            $('#cart-overlay').removeClass('show');
-            mostrarNotificacao('Compra finalizada com sucesso! Você receberá um e-mail de confirmação.', 'success');
-        }, 1000);
+// Função genérica para carregar carrinho
+function carregarCarrinho() {
+    if (usuarioLogado) {
+        carregarCarrinhoServidor();
+    } else {
+        carregarCarrinhoLocal();
     }
 }
 
-// Configurar eventos
-function configurarEventos() {
-    // Eventos do carrinho
-    $('#cart-btn').on('click', function() {
-        $('#cart-sidebar').addClass('show');
-        $('#cart-overlay').addClass('show');
-        atualizarCarrinho();
-    });
-    
-    $('.close-cart, #cart-overlay').on('click', function() {
-        $('#cart-sidebar').removeClass('show');
-        $('#cart-overlay').removeClass('show');
-    });
-    
-    $('#checkout-btn').on('click', finalizarCompra);
-    
+// Salvar dados no localStorage
+function salvarDadosLocais() {
+    localStorage.setItem('calmaair_carrinho', JSON.stringify(carrinhoOffline));
+    if (usuarioOffline) {
+        localStorage.setItem('calmaair_usuario', JSON.stringify(usuarioOffline));
+    }
+}
+
+// Inicializar eventos offline
+function inicializarEventosOffline() {
     // Eventos dos modais
-    $('#login-btn').on('click', function() {
-        if (!usuarioLogado) {
+    $('#login-btn').off('click').on('click', function() {
+        if (usuarioOffline) {
+            if (confirm('Deseja fazer logout?')) {
+                logoutOffline();
+            }
+        } else {
             $('#login-modal').addClass('show');
         }
     });
-    
+
     $('#register-btn').on('click', function() {
         $('#register-modal').addClass('show');
     });
-    
+
     $('.close-modal').on('click', function() {
         const modal = $(this).data('modal');
         $(`#${modal}-modal`).removeClass('show');
     });
-    
-    // Fechar modal de verificação
-    $('[data-modal="verify"]').on('click', function() {
-        $('#verify-modal').removeClass('show');
-    });
-    
-    $('#show-register').on('click', function(e) {
-        e.preventDefault();
-        $('#login-modal').removeClass('show');
-        $('#register-modal').addClass('show');
-    });
-    
-    $('#show-login').on('click', function(e) {
-        e.preventDefault();
-        $('#register-modal').removeClass('show');
-        $('#login-modal').addClass('show');
-    });
-    
-    // Fechar modais clicando fora
+
+    // Fechar modal clicando fora
     $('.modal-overlay').on('click', function(e) {
         if (e.target === this) {
             $(this).removeClass('show');
         }
     });
-    
-    // Formulário de login
-    $('#login-form').on('submit', function(e) {
+
+    // Formulário de login offline
+    $('#login-form').off('submit').on('submit', function(e) {
         e.preventDefault();
         const email = $('#login-email').val();
         const senha = $('#login-password').val();
-        
+
         if (!email || !senha) {
-            mostrarNotificacao('Preencha todos os campos', 'error');
+            mostrarNotificacaoOffline('Preencha todos os campos', 'error');
             return;
         }
-        
-        login(email, senha);
+
+        if (!validarEmailOffline(email)) {
+            mostrarNotificacaoOffline('Digite um e-mail válido', 'error');
+            return;
+        }
+
+        loginOffline(email, senha);
     });
-    
-    // Formulário de cadastro
-    $('#register-form').on('submit', function(e) {
+
+    // Formulário de cadastro offline
+    $('#register-form').off('submit').on('submit', function(e) {
         e.preventDefault();
         const nome = $('#register-name').val();
-        const email = $('#register-email').val();
+        const dataNascimento = $('#register-birth').val();
+        const cpf = $('#register-cpf').val();
         const telefone = $('#register-phone').val();
+        const email = $('#register-email').val();
         const senha = $('#register-password').val();
         const confirmarSenha = $('#register-confirm').val();
-        
-        if (!nome || !email || !telefone || !senha || !confirmarSenha) {
-            mostrarNotificacao('Preencha todos os campos', 'error');
+
+        if (!nome || !telefone || !email || !senha || !confirmarSenha) {
+            mostrarNotificacaoOffline('Preencha todos os campos', 'error');
             return;
         }
-        
-        if (!validarEmail(email)) {
-            mostrarNotificacao('Digite um e-mail válido', 'error');
+
+        if (!validarEmailOffline(email)) {
+            mostrarNotificacaoOffline('Digite um e-mail válido', 'error');
             return;
         }
-        
+
         if (senha !== confirmarSenha) {
-            mostrarNotificacao('As senhas não coincidem', 'error');
+            mostrarNotificacaoOffline('As senhas não coincidem', 'error');
             return;
         }
-        
+
         if (senha.length < 6) {
-            mostrarNotificacao('A senha deve ter pelo menos 6 caracteres', 'error');
+            mostrarNotificacaoOffline('A senha deve ter pelo menos 6 caracteres', 'error');
             return;
         }
-        
-        cadastrar({ nome, email, telefone, senha });
+
+        cadastrarOffline({ nome, dataNascimento, cpf, telefone, email, senha });
     });
-    
-    // Modal de verificação
-    $('#verify-btn').on('click', function() {
-        const codigo = $('#verify-code').val();
-        const email = window.emailVerificacao;
-        
-        if (!codigo || codigo.length !== 6) {
-            mostrarNotificacao('Digite o código de 6 dígitos', 'error');
-            return;
-        }
-        
-        verificarCodigo(email, codigo);
+
+    // Botões de adicionar ao carrinho
+    $(document).off('click', '.add-to-cart').on('click', '.add-to-cart', function() {
+        const produto = {
+            produto_id: $(this).data('id'),
+            nome: $(this).data('nome'),
+            preco: parseFloat($(this).data('preco')),
+            quantidade: 1,
+            imagem: $(this).data('imagem')
+        };
+
+        adicionarAoCarrinhoOffline(produto);
     });
-    
-    $('#resend-code').on('click', function(e) {
-        e.preventDefault();
-        const email = window.emailVerificacao;
-        reenviarCodigo(email);
-    });
-    
-    // Newsletter
-    $('.btn-newsletter').on('click', function() {
-        const email = $('#newsletter-email').val();
-        if (!email) {
-            mostrarNotificacao('Digite um e-mail válido', 'error');
-            return;
-        }
-        
-        // Simular cadastro na newsletter
-        setTimeout(() => {
-            $('#newsletter-email').val('');
-            mostrarNotificacao('E-mail cadastrado na newsletter com sucesso!', 'success');
-        }, 500);
-    });
-    
-    // Menu mobile
-    $('.mobile-menu-toggle').on('click', function() {
-        $('.nav-menu').toggleClass('show');
-    });
-    
-    // Busca
-    $('#search-input').on('keypress', function(e) {
-        if (e.which === 13) {
-            realizarBusca();
-        }
-    });
-    
-    $('.search-btn').on('click', realizarBusca);
-    
-    // Botão hero
-    $('.btn-hero').on('click', function() {
-        $('html, body').animate({
-            scrollTop: $('.products-section').offset().top - 100
-        }, 800);
+
+    // Botão do carrinho
+    $('#cart-btn').off('click').on('click', function() {
+        mostrarCarrinhoOffline();
     });
 }
 
-function realizarBusca() {
-    const termo = $('#search-input').val().toLowerCase();
-    if (!termo) return;
+// Login offline (simulado)
+function loginOffline(email, senha) {
+    // Simular validação (em um sistema real, seria no servidor)
+    const usuariosSimulados = JSON.parse(localStorage.getItem('calmaair_usuarios') || '[]');
+    const usuario = usuariosSimulados.find(u => u.email === email && u.senha === senha);
+
+    if (usuario) {
+        usuarioOffline = {
+            nome: usuario.nome,
+            email: usuario.email
+        };
+        salvarDadosLocais();
+        $('#login-modal').removeClass('show');
+        mostrarNotificacaoOffline('Login realizado com sucesso!', 'success');
+        atualizarInterfaceOffline();
+    } else {
+        mostrarNotificacaoOffline('Email ou senha incorretos', 'error');
+    }
+}
+
+// Cadastro offline
+function cadastrarOffline(dados) {
+    const usuariosSimulados = JSON.parse(localStorage.getItem('calmaair_usuarios') || '[]');
     
-    const produtosFiltrados = produtos.filter(produto => 
-        produto.nome.toLowerCase().includes(termo) ||
-        produto.descricao.toLowerCase().includes(termo)
-    );
-    
-    if (produtosFiltrados.length === 0) {
-        mostrarNotificacao('Nenhum produto encontrado', 'error');
+    // Verificar se email já existe
+    if (usuariosSimulados.find(u => u.email === dados.email)) {
+        mostrarNotificacaoOffline('E-mail já cadastrado', 'error');
         return;
     }
-    
-    // Rolar para a seção de produtos
-    $('html, body').animate({
-        scrollTop: $('.products-section').offset().top - 100
-    }, 800);
-    
-    // Destacar produtos encontrados
-    $('.product-card').removeClass('highlight');
-    produtosFiltrados.forEach(produto => {
-        $(`.product-card[data-id="${produto.id}"]`).addClass('highlight');
+
+    // Adicionar novo usuário
+    usuariosSimulados.push({
+        nome: dados.nome,
+        email: dados.email,
+        senha: dados.senha,
+        telefone: dados.telefone,
+        dataNascimento: dados.dataNascimento,
+        cpf: dados.cpf
     });
+
+    localStorage.setItem('calmaair_usuarios', JSON.stringify(usuariosSimulados));
     
+    $('#register-modal').removeClass('show');
+    mostrarNotificacaoOffline('Cadastro realizado com sucesso! Agora você pode fazer login.', 'success');
+    
+    // Auto-login após cadastro
     setTimeout(() => {
-        $('.product-card').removeClass('highlight');
-    }, 3000);
+        loginOffline(dados.email, dados.senha);
+    }, 1000);
 }
 
-// Formatação de telefone
-$('#register-phone').on('input', function() {
-    let valor = $(this).val().replace(/\D/g, '');
-    valor = valor.replace(/(\d{2})(\d)/, '($1) $2');
-    valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
-    $(this).val(valor);
-});
+// Logout offline
+function logoutOffline() {
+    usuarioOffline = null;
+    carrinhoOffline = [];
+    localStorage.removeItem('calmaair_usuario');
+    localStorage.removeItem('calmaair_carrinho');
+    atualizarInterfaceOffline();
+    atualizarContadorOffline();
+    mostrarNotificacaoOffline('Logout realizado com sucesso!', 'success');
+}
 
-// Validação de e-mail
-function validarEmail(email) {
+// Atualizar interface baseada no login
+function atualizarInterfaceOffline() {
+    if (usuarioOffline) {
+        $('#login-btn .btn-text').text(`Olá, ${usuarioOffline.nome.split(' ')[0]}`);
+        $('#register-btn').hide();
+        $('#cart-counter').show();
+    } else {
+        $('#login-btn .btn-text').text('Minha Conta');
+        $('#register-btn').show();
+        $('#cart-counter').hide();
+    }
+}
+
+// Adicionar produto ao carrinho offline
+function adicionarAoCarrinhoOffline(produto) {
+    const itemExistente = carrinhoOffline.find(item => item.produto_id === produto.produto_id);
+
+    if (itemExistente) {
+        itemExistente.quantidade += produto.quantidade;
+        mostrarNotificacaoOffline('Quantidade atualizada no carrinho', 'success');
+    } else {
+        carrinhoOffline.push(produto);
+        mostrarNotificacaoOffline('Produto adicionado ao carrinho', 'success');
+    }
+
+    salvarDadosLocais();
+    calcularTotalOffline();
+    atualizarContadorOffline();
+}
+
+// Atualizar quantidade no carrinho
+function atualizarQuantidadeOffline(produtoId, quantidade) {
+    const item = carrinhoOffline.find(item => item.produto_id === produtoId);
+    if (item) {
+        if (quantidade <= 0) {
+            removerDoCarrinhoOffline(produtoId);
+        } else {
+            item.quantidade = quantidade;
+            salvarDadosLocais();
+            calcularTotalOffline();
+            atualizarContadorOffline();
+            mostrarNotificacaoOffline('Carrinho atualizado', 'success');
+            // Recarregar modal do carrinho
+            $('#cart-modal').remove();
+            mostrarCarrinhoOffline();
+        }
+    }
+}
+
+// Remover produto do carrinho
+function removerDoCarrinhoOffline(produtoId) {
+    carrinhoOffline = carrinhoOffline.filter(item => item.produto_id !== produtoId);
+    salvarDadosLocais();
+    calcularTotalOffline();
+    atualizarContadorOffline();
+    mostrarNotificacaoOffline('Produto removido do carrinho', 'success');
+    
+    // Recarregar modal do carrinho
+    $('#cart-modal').remove();
+    if (carrinhoOffline.length > 0) {
+        mostrarCarrinhoOffline();
+    }
+}
+
+// Limpar carrinho
+function limparCarrinhoOffline() {
+    carrinhoOffline = [];
+    localStorage.removeItem('calmaair_carrinho');
+    calcularTotalOffline();
+    atualizarContadorOffline();
+    mostrarNotificacaoOffline('Carrinho limpo', 'success');
+    $('#cart-modal').remove();
+}
+
+// Atualizar contador do carrinho
+function atualizarContadorOffline() {
+    const totalItens = carrinhoOffline.reduce((total, item) => total + item.quantidade, 0);
+    $('#cart-counter').text(totalItens);
+    
+    if (totalItens > 0) {
+        $('#cart-counter').show();
+    } else {
+        $('#cart-counter').hide();
+    }
+}
+
+// Calcular total do carrinho
+function calcularTotalOffline() {
+    totalCarrinhoOffline = carrinhoOffline.reduce((total, item) => total + (item.preco * item.quantidade), 0);
+}
+
+// Mostrar carrinho offline
+function mostrarCarrinhoOffline() {
+    if (carrinhoOffline.length === 0) {
+        mostrarNotificacaoOffline('Seu carrinho está vazio', 'info');
+        return;
+    }
+
+    let html = `
+        <div id="cart-modal" class="modal-overlay show">
+            <div class="modal-container cart-container">
+                <div class="modal-header">
+                    <h2>Meu Carrinho</h2>
+                    <button class="close-modal" onclick="$('#cart-modal').remove()">&times;</button>
+                </div>
+                <div class="cart-items">
+    `;
+
+    carrinhoOffline.forEach(item => {
+        html += `
+            <div class="cart-item">
+                <img src="${item.imagem || 'placeholder.jpg'}" alt="${item.nome}">
+                <div class="item-details">
+                    <h4>${item.nome}</h4>
+                    <p class="item-price">R$ ${item.preco.toFixed(2)}</p>
+                </div>
+                <div class="quantity-controls">
+                    <button onclick="atualizarQuantidadeOffline(${item.produto_id}, ${item.quantidade - 1})" ${item.quantidade <= 1 ? 'disabled' : ''}>-</button>
+                    <span>${item.quantidade}</span>
+                    <button onclick="atualizarQuantidadeOffline(${item.produto_id}, ${item.quantidade + 1})">+</button>
+                </div>
+                <div class="item-total">R$ ${(item.preco * item.quantidade).toFixed(2)}</div>
+                <button class="remove-item" onclick="removerDoCarrinhoOffline(${item.produto_id})">🗑️</button>
+            </div>
+        `;
+    });
+
+    html += `
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <strong>Total: R$ ${totalCarrinhoOffline.toFixed(2)}</strong>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn-clear-cart" onclick="limparCarrinhoOffline()">Limpar Carrinho</button>
+                        <button class="btn-checkout" onclick="mostrarCheckoutOffline()">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    $('body').append(html);
+}
+
+// Mostrar checkout offline
+function mostrarCheckoutOffline() {
+    if (!usuarioOffline) {
+        mostrarNotificacaoOffline('Faça login para finalizar a compra', 'error');
+        $('#cart-modal').remove();
+        $('#login-modal').addClass('show');
+        return;
+    }
+
+    $('#cart-modal').remove();
+    
+    let html = `
+        <div id="checkout-modal" class="modal-overlay show">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>Finalizar Compra</h2>
+                    <button class="close-modal" onclick="$('#checkout-modal').remove()">&times;</button>
+                </div>
+                <form id="checkout-form-offline" class="modal-form">
+                    <div class="input-group">
+                        <label>Endereço de Entrega:</label>
+                        <textarea id="checkout-endereco-offline" placeholder="Digite seu endereço completo" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Forma de Pagamento:</label>
+                        <select id="checkout-pagamento-offline" required>
+                            <option value="">Selecione...</option>
+                            <option value="cartao_credito">Cartão de Crédito</option>
+                            <option value="cartao_debito">Cartão de Débito</option>
+                            <option value="pix">PIX</option>
+                            <option value="boleto">Boleto</option>
+                        </select>
+                    </div>
+                    <div class="checkout-summary">
+                        <h3>Resumo do Pedido:</h3>
+                        <div class="summary-items">
+    `;
+
+    carrinhoOffline.forEach(item => {
+        html += `
+            <div class="summary-item">
+                <span>${item.nome} x${item.quantidade}</span>
+                <span>R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+            </div>
+        `;
+    });
+
+    html += `
+                        </div>
+                        <div class="summary-total">Total: R$ ${totalCarrinhoOffline.toFixed(2)}</div>
+                    </div>
+                    <button type="submit" class="btn-submit">Confirmar Pedido</button>
+                </form>
+            </div>
+        </div>
+    `;
+
+    $('body').append(html);
+
+    $('#checkout-form-offline').on('submit', function(e) {
+        e.preventDefault();
+        finalizarCompraOffline();
+    });
+}
+
+// Finalizar compra offline
+function finalizarCompraOffline() {
+    const endereco = $('#checkout-endereco-offline').val();
+    const formaPagamento = $('#checkout-pagamento-offline').val();
+
+    if (!endereco || !formaPagamento) {
+        mostrarNotificacaoOffline('Preencha todos os campos', 'error');
+        return;
+    }
+
+    // Simular processamento do pedido
+    const pedido = {
+        id: Date.now(),
+        usuario: usuarioOffline,
+        itens: [...carrinhoOffline],
+        total: totalCarrinhoOffline,
+        endereco: endereco,
+        formaPagamento: formaPagamento,
+        data: new Date().toISOString(),
+        status: 'Confirmado'
+    };
+
+    // Salvar pedido no localStorage
+    const pedidos = JSON.parse(localStorage.getItem('calmaair_pedidos') || '[]');
+    pedidos.push(pedido);
+    localStorage.setItem('calmaair_pedidos', JSON.stringify(pedidos));
+
+    // Limpar carrinho
+    carrinhoOffline = [];
+    localStorage.removeItem('calmaair_carrinho');
+    calcularTotalOffline();
+    atualizarContadorOffline();
+
+    $('#checkout-modal').remove();
+    mostrarNotificacaoOffline(`Pedido #${pedido.id} confirmado com sucesso!`, 'success');
+}
+
+// Funções auxiliares
+function validarEmailOffline(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-// Efeitos visuais
-$(window).on('scroll', function() {
-    const scrollTop = $(window).scrollTop();
+function mostrarNotificacaoOffline(mensagem, tipo) {
+    const classe = tipo === 'success' ? 'notification-success' : 
+                   tipo === 'error' ? 'notification-error' : 'notification-info';
     
-    // Efeito parallax no hero
-    $('.hero-images').css('transform', `translateY(${scrollTop * 0.3}px)`);
-    
-    // Animação dos produtos ao entrar na viewport
-    $('.product-card').each(function() {
-        const elementTop = $(this).offset().top;
-        const windowBottom = $(window).scrollTop() + $(window).height();
-        
-        if (elementTop < windowBottom - 100) {
-            $(this).addClass('animate-in');
-        }
-    });
-});
+    const notification = $(`
+        <div class="notification ${classe}">
+            ${mensagem}
+        </div>
+    `);
 
-// Adicionar classe de destaque para busca
-const style = document.createElement('style');
-style.textContent = `
-    .product-card.highlight {
-        transform: scale(1.05);
-        box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
-        z-index: 10;
-        position: relative;
-    }
+    $('body').append(notification);
     
-    .product-card.animate-in {
-        animation: fadeInUp 0.6s ease forwards;
-    }
-`;
-document.head.appendChild(style);
+    setTimeout(() => {
+        notification.addClass('show');
+    }, 100);
 
-// Funcionalidade de busca em tempo real
-$('#search-input').on('input', function() {
-    const termo = $(this).val().toLowerCase();
-    
-    if (termo.length > 2) {
-        const sugestoes = produtos.filter(produto => 
-            produto.nome.toLowerCase().includes(termo)
-        ).slice(0, 3);
-        
-        // Aqui você pode implementar um dropdown de sugestões
-        console.log('Sugestões:', sugestoes);
-    }
-});
-
-// Adicionar funcionalidade de favoritos (opcional)
-function toggleFavorito(produtoId) {
-    let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
-    
-    if (favoritos.includes(produtoId)) {
-        favoritos = favoritos.filter(id => id !== produtoId);
-        mostrarNotificacao('Produto removido dos favoritos', 'success');
-    } else {
-        favoritos.push(produtoId);
-        mostrarNotificacao('Produto adicionado aos favoritos', 'success');
-    }
-    
-    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    setTimeout(() => {
+        notification.removeClass('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
-// Função para lidar com erros de imagem
-$(document).on('error', 'img', function() {
-    $(this).attr('src', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbSBuw6NvIGVuY29udHJhZGE8L3RleHQ+PC9zdmc+');
-});
-
-// Função para mostrar modal de verificação
-function mostrarModalVerificacao(email) {
-    window.emailVerificacao = email;
-    $('#verify-modal').addClass('show');
-}
-
-// Verificar código de e-mail
-function verificarCodigo(email, codigo) {
-    $.ajax({
-        url: '/verificar-email',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ email, codigo }),
-        success: function(response) {
-            if (response.msg === "E-mail verificado com sucesso!") {
-                $('#verify-modal').removeClass('show');
-                mostrarNotificacao('E-mail verificado! Agora você pode fazer login.', 'success');
-                setTimeout(() => {
-                    $('#login-modal').addClass('show');
-                }, 1000);
-            } else {
-                mostrarNotificacao(response.msg, 'error');
-            }
-        },
-        error: function(xhr) {
-            const erro = xhr.responseJSON?.msg || 'Erro ao verificar código';
-            mostrarNotificacao(erro, 'error');
-        }
-    });
-}
-
-// Reenviar código
-function reenviarCodigo(email) {
-    $.ajax({
-        url: '/novo-codigo',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ email }),
-        success: function(response) {
-            mostrarNotificacao(response.msg, 'success');
-        },
-        error: function(xhr) {
-            const erro = xhr.responseJSON?.msg || 'Erro ao reenviar código';
-            mostrarNotificacao(erro, 'error');
-        }
-    });
-}
-
-// Adicionar smooth scroll para links internos
-$('a[href^="#"]').on('click', function(e) {
-    e.preventDefault();
-    const target = $($(this).attr('href'));
-    if (target.length) {
-        $('html, body').animate({
-            scrollTop: target.offset().top - 100
-        }, 800);
-    }
-});
-
-// Lazy loading para imagens (melhoria de performance)
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-    });
-}
+// Expor funções globalmente para uso nos botões HTML
+window.atualizarQuantidadeOffline = atualizarQuantidadeOffline;
+window.removerDoCarrinhoOffline = removerDoCarrinhoOffline;
+window.limparCarrinhoOffline = limparCarrinhoOffline;
+window.mostrarCheckoutOffline = mostrarCheckoutOffline;

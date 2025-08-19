@@ -1,0 +1,31 @@
+CREATE DATABASE calma_air;
+
+USE calma_air;
+
+CREATE TABLE tb_usuarios(
+IdUsuario INT PRIMARY KEY AUTO_INCREMENT,
+Nome_completo VARCHAR(255)NOT NULL,
+Data_nascimento DATE,
+Cpf VARCHAR(255)NOT NULL UNIQUE,
+Telefone VARCHAR(21)NOT NULL UNIQUE,
+Email VARCHAR(255) NOT NULL UNIQUE,
+Senha VARCHAR(255) NOT NULL,
+Data_cadastro DATETIME DEFAULT NOW());
+
+CREATE TABLE tb_historicos(
+IdHistorico INT PRIMARY KEY AUTO_INCREMENT,
+Nome_produto VARCHAR(255) NOT NULL,
+Data_de_venda DATETIME DEFAULT NOW(),
+preco DECIMAL(10,2) NOT NULL,
+fk_id_usuario INT NOT NULL,
+FOREIGN KEY(fk_id_usuario) REFERENCES tb_usuarios(IdUsuario)
+);	
+
+ALTER TABLE tb_usuarios
+  ADD COLUMN verificado TINYINT(1) NOT NULL DEFAULT 0 AFTER Senha,
+  ADD COLUMN codigo_verificacao VARCHAR(255) NULL AFTER verificado,
+  ADD COLUMN codigo_expira_em DATETIME NULL AFTER codigo_verificacao;
+
+ALTER TABLE tb_usuarios 
+MODIFY COLUMN Cpf VARCHAR(14) UNIQUE;
+

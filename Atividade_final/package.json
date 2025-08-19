@@ -8,15 +8,5 @@
     "mysql2": "^3.14.3",
     "nodemailer": "^7.0.5",
     "path": "^0.12.7"
-  },
-  "name": "atividade_final",
-  "version": "1.0.0",
-  "main": "conexao.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }
