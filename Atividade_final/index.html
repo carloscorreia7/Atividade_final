@@ -1,230 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js "></script>
+    <title>CalmaAir - Ventiladores Sem Hélice</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-    <link rel="stylesheet" href="stylo.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     
+    <!-- CSS -->
+    <link rel="stylesheet" href="stylo.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 <body>
-    <div id="topo1">
-        <i class="fi fi-br-lock"> Bem vindo à Loja Oficial da <span id="texto_preto"> CalmaAir! </i></span>
-        <div id="topo2">
-        <p>Rastreie seu Pedido</p>
-        <p>Assistência Técnica</p>
-        <p>Portal do Revendedor</p> 
-        <p>Seja um Revedendor</p>
+    <!-- Header Superior -->
+    <header class="top-header">
+        <div class="container">
+            <div class="top-left">
+                <i class="fi fi-br-shield-check"></i>
+                <span>Bem-vindo à Loja Oficial da <strong>CalmaAir!</strong></span>
+            </div>
+            <div class="top-right">
+                <a href="#" class="top-link">Rastreie seu Pedido</a>
+                <a href="#" class="top-link">Assistência Técnica</a>
+                <a href="#" class="top-link">Portal do Revendedor</a>
+                <a href="#" class="top-link">Seja um Revendedor</a>
+            </div>
         </div>
-    </div>
-    <div id="topotodo">
-        <img src="ChatGPT Image 16 de ago. de 2025, 16_59_43.png" alt="">
-        <div id="topo3">
-            <input type="text" placeholder="o que você está buscando">
-            <button><label for="buscar"><i class="fi fi-bs-search"></i></label></button>
-        </div>
-        <button id="login_formulario">Minha conta</button>
-        <button id="cadastro_formulario">Cadastre-se</button>
-        <button id="carrinho">🛒 Carrinho <span id="contador-carrinho" class="contador-carrinho">0</span></button>
-    </div>
-        
-     <div id="barra">
-        <p>Ventiladores de mesa</p>
-        <p>Ventiladores de torre</p>
-        <p>Ventiladores de parede</p>
-        <p>Ventiladores de teto</p>
-        <p>Ventiladores portáteis ou de bolso</p>
-        <p>Ventiladores inteligentes / conectados</p> 
-     </div>
-      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10266516.jpg" alt="Primeiro Slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10265829-m.jpg"
-                        alt="Segundo Slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="https://img.cdndsgni.com/preview/10266510-m.jpg"
-                        alt="Terceiro Slide">
+    </header>
+
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo-section">
+                <img src="ChatGPT Image 16 de ago. de 2025, 16_59_43.png" alt="CalmaAir Logo" class="logo">
+            </div>
+            
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="O que você está buscando?">
+                    <button type="button" class="search-btn">
+                        <i class="fi fi-br-search"></i>
+                    </button>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Anterior</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Próximo</span>
-            </a>
+            
+            <div class="user-actions">
+                <button id="login-btn" class="btn-outline">
+                    <i class="fi fi-br-user"></i>
+                    <span class="btn-text">Minha Conta</span>
+                </button>
+                <button id="register-btn" class="btn-primary">
+                    <i class="fi fi-br-user-add"></i>
+                    <span class="btn-text">Cadastre-se</span>
+                </button>
+                <button id="cart-btn" class="btn-cart">
+                    <i class="fi fi-br-shopping-cart"></i>
+                    <span class="btn-text">Carrinho</span>
+                    <span id="cart-counter" class="cart-counter">0</span>
+                </button>
+            </div>
         </div>
-    </div>
-    <div id="topo_baixo">
-        <div id="entrega">
-        <i class="fi fi-ss-map-marker"> ENTREGA GARANTIDA </i>
-         <p>Para todo o Brasil</p>
-         </div>
-         <div id="seguro">
+    </header>
 
-         <i class="fi fi-ss-assept-document"> SITE 100% SEGURO </i>
-         <p>Seus dados estão protegidos</p>
-         </div>
+    <!-- Navegação -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="nav-menu">
+                <a href="#" class="nav-item">Ventiladores de Mesa</a>
+                <a href="#" class="nav-item">Ventiladores de Torre</a>
+                <a href="#" class="nav-item">Ventiladores de Parede</a>
+                <a href="#" class="nav-item">Ventiladores de Teto</a>
+                <a href="#" class="nav-item">Portáteis</a>
+                <a href="#" class="nav-item">Inteligentes</a>
+            </div>
+            <div class="mobile-menu-toggle">
+                <i class="fi fi-br-menu-burger"></i>
+            </div>
+        </div>
+    </nav>
 
-         <div id="parcela">
-         <i class="fi fi-sr-credit-card"> PARCELE EM ATÉ 6X </i>
-         <p> Sem juros no Cartão de Crédito</p>
-         </div>
-         
-         <div id="variedade">
-         <i class="fi fi-bs-boxes"> VARIEDADE DE PRODUTOS</i>
-         <p>Super Exclusivos</p>
-         </div>
-    </div>
-    <div id="imagem_topo2">
-        <img src="Gemini_Generated_Image_4gfa374gfa374gfa.jpeg" alt="">
-        <img src="Captura de tela 2025-08-16 213811.png" alt="">
-    </div>
-    <div id="produtos1">
-       <h2 class="titulo">Mais Vendidos</h2>
-    </div>
-    <div id="produtos">
-   <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="ventilador.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <center><h5 class="card-title">Refrigerador de ar usb portátil, ventilador elétrico sem folhas, temporizador silencioso de 6 velocidades, ventilador de refrigeração, umidificador, ventilador de condicionamento</h5>
-                <p class="card-text">
-                    R$335
-                    12x R$32
+    <!-- Banner Hero -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Ventiladores Sem Hélice</h1>
+                <p>Tecnologia inovadora para o seu conforto</p>
+                <button class="btn-hero">Ver Produtos</button>
+            </div>
+        </div>
+        <div class="hero-images">
+            <img src="Gemini_Generated_Image_4gfa374gfa374gfa.jpeg" alt="Ventilador sem hélice">
+            <img src="Captura de tela 2025-08-16 213811.png" alt="Ventilador moderno">
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <i class="fi fi-ss-truck-side"></i>
+                    <h3>Entrega Garantida</h3>
+                    <p>Para todo o Brasil</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fi fi-ss-shield-check"></i>
+                    <h3>Site 100% Seguro</h3>
+                    <p>Seus dados estão protegidos</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fi fi-sr-credit-card"></i>
+                    <h3>Parcele em até 12x</h3>
+                    <p>Sem juros no Cartão de Crédito</p>
+                </div>
+                <div class="benefit-item">
+                    <i class="fi fi-bs-boxes"></i>
+                    <h3>Variedade de Produtos</h3>
+                    <p>Super Exclusivos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">Mais Vendidos</h2>
+            <div id="products-grid" class="products-grid">
+                <!-- Produtos serão carregados via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Newsletter <span class="brand-highlight">CalmaAir</span></h2>
+                <p>Inscreva-se para receber novidades e promoções exclusivas</p>
+                <div class="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Digite seu e-mail" required>
+                    <button type="button" class="btn-newsletter">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Login -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Entrar na sua conta</h2>
+                <button class="close-modal" data-modal="login">&times;</button>
+            </div>
+            <form id="login-form" class="modal-form">
+                <div class="input-group">
+                    <input type="email" id="login-email" placeholder="E-mail" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Senha" required>
+                </div>
+                <button type="submit" class="btn-submit">Entrar</button>
+                <p class="form-footer">
+                    Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a>
                 </p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-        <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="5-main-ventilador-eletrico-sem-folhas-portatil-refrigerador-de-ar-temporizador-silencioso-ar-condicionado-ventilador-umidificador-desktop-condicionado-fas-6-velocidade_800x.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <center><h5 class="card-title">Ventilador e Umidificador - Torre Portátil sem Hélices 2024</h5>
-                <p class="card-text">R$ 429,90
-                     12x R$52,22
-                </p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-        <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="D_Q_NP_2X_727104-MLB83958446298_052025-R.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <center><h5 class="card-title">Ventilador Sem Pás De 3velocidades Com Rotação 106°e Luz Led</h5>
-                <p class="card-text">R$335
-                    12x R$32</p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-    </div>
-    <div id="produtos">
-        <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="ventilador1.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <center><h5 class="card-title">Ventilador de torre sem lâmina com modos de aquecimento/resfriamento, </h5>
-                <p class="card-text">R$307,66</p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-        <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="shopping.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <center><h5 class="card-title">Sistema de resfriamento de torre 3 em 1 com umidificador, purificador de ar</h5>
-                <p class="card-text">R$203,99</p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-        <div class="card" style="width: 25rem;">
-            <img class="card-img-top" src="miniventiladorsemheliceblack.webp" alt="Imagem de capa do card">
-            <div class="card-body">
-                <br>
-                <center><h5 class="card-title">Mini Ventilador Sem Hélice Portátil Recarregável Usb</h5>
-                <p class="card-text">R$ 44,99</p>
-              <button type="button" class="btn btn-success btn-comprar">🛒 Adicionar ao Carrinho</button></center>
-            </div>
-          </div>
-    </div>
-
-  <div class="topo-baixo">
-    <h2>NEWSLETTER <span>CalmaAir</span></h2> 
-    <p>Inscreva-se para receber as Novidades e Promoções</p><br> <br>
-    <div class="topocima">
-            <input type="email" placeholder="Email">
-            <button type="submit">Cadastrar</button>
-    </div>
-  </div>
-  <div id="tela_escura">
-    <div class="login-container">
-      <div class="fechar_login">❌</div>
-      <h2>Identifique-se</h2>
-      <form>
-        <input type="text" class="input-field" placeholder="E-mail ">
-        <input type="text" class="input-field" placeholder="Senha">
-        <button type="submit" class="btn">Entrar</button>
-      </form>
-
-      <p class="footer-text">
-        Ao entrar, você concorda com nossa <a href="#">política de privacidade</a>.
-      </p>
-    </div>
-    <div class="cadastro-container">
-      <div class="fechar_cadastro">❌</div>
-      <h2>Crie sua conta</h2>
-      <form>
-        <input type="text" class="input-field" id="nome" placeholder="Nome completo" required>
-        <input type="date" class="input-field" id="dataNascimento" required>
-        <input type="text" class="input-field" id="cpf" placeholder="CPF" maxlength="14" required>
-        <input type="tel" class="input-field" id="telefone" placeholder="(99) 99999-9999" required>
-        <input type="email" class="input-field" id="email" placeholder="E-mail" required>
-        <input type="password" class="input-field" id="senha" placeholder="Senha" required>
-        <input type="password" class="input-field" id="senha2" placeholder="Confirme a senha" required>
-        <button type="submit" class="btn">Cadastrar</button>
-      </form>
-  
-      <p class="footer-text">
-        Já tem uma conta? <a href="#formulario_login">Entrar</a>
-      </p>
-    </div>
-  <!-- Carrinho Lateral -->
-  <div class="carrinho-sidebar">
-    <div class="carrinho-header">
-      <h3>🛒 Meu Carrinho</h3>
-      <button class="fechar-carrinho">✖</button>
-    </div>
-    <div class="carrinho-conteudo">
-      <div id="carrinho-itens"></div>
-      <div class="carrinho-footer">
-        <div class="carrinho-total-container">
-          <strong>Total: <span id="carrinho-total">R$ 0,00</span></strong>
+            </form>
         </div>
-        <button id="finalizar-compra" class="btn-finalizar">💳 Finalizar Compra</button>
-      </div>
     </div>
-  </div>
-  <script src="funcoes.js"></script>
+
+    <!-- Modal de Cadastro -->
+    <div id="register-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Criar sua conta</h2>
+                <button class="close-modal" data-modal="register">&times;</button>
+            </div>
+            <form id="register-form" class="modal-form">
+                <div class="input-group">
+                    <input type="text" id="register-name" placeholder="Nome completo" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="register-email" placeholder="E-mail" required>
+                </div>
+                <div class="input-group">
+                    <input type="tel" id="register-phone" placeholder="Telefone" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-password" placeholder="Senha" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="register-confirm" placeholder="Confirme a senha" required>
+                </div>
+                <button type="submit" class="btn-submit">Cadastrar</button>
+                <p class="form-footer">
+                    Já tem uma conta? <a href="#" id="show-login">Entrar</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Verificação de E-mail -->
+    <div id="verify-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Verificar E-mail</h2>
+                <button class="close-modal" data-modal="verify">&times;</button>
+            </div>
+            <div class="modal-form">
+                <p class="verify-text">Enviamos um código de verificação para seu e-mail. Digite o código abaixo:</p>
+                <div class="input-group">
+                    <input type="text" id="verify-code" placeholder="Código de verificação" maxlength="6" required>
+                </div>
+                <button type="button" id="verify-btn" class="btn-submit">Verificar</button>
+                <p class="form-footer">
+                    Não recebeu o código? <a href="#" id="resend-code">Reenviar</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrinho Lateral -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3><i class="fi fi-br-shopping-cart"></i> Meu Carrinho</h3>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-content">
+            <div id="cart-items" class="cart-items">
+                <p class="cart-empty">Seu carrinho está vazio</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: <span id="cart-total">R$ 0,00</span></strong>
+            </div>
+            <button id="checkout-btn" class="btn-checkout">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <!-- Overlay do Carrinho -->
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <!-- Notificações -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="funcoes.js"></script>
 </body>
- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-</html
+</html>

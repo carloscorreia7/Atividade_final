@@ -1,15 +1,14 @@
-const db = require('./conexao');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer')
 const app = express();
 const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
-const { error } = require('console');
+
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 app.use(session({
   secret: '46feb3e2fec47e6d6cd7bc44bfe1aef9',
@@ -18,64 +17,57 @@ app.use(session({
   cookie: { maxAge: 15 * 60 * 1000 }
 }));
 
-const transporter = nodemailer.createTransport({
-  service: "gmail", // ou SMTP
-  auth: {
-    user: "ventiladorescalmarair@gmail.com",
-    pass: "ezdo rdpm ylwd qmrf"
-  }
-});
+// Configuração do nodemailer removida para simplificar
+// const transporter = nodemailer.createTransport({
+//   service: "gmail", // ou SMTP
+//   auth: {
+//     user: "ventiladorescalmarair@gmail.com",
+//     pass: "ezdo rdpm ylwd qmrf"
+//   }
+// });
+
+// Simulação de banco de dados em memória (para demonstração)
+let usuarios = [];
+let codigosVerificacao = {};
 
 app.post("/cadastro", async (req, res) => {
   const { nome_completo, data_nascimento, cpf, telefone, email, senha } = req.body;
 
   try {
+    // Verificar se usuário já existe
+    const usuarioExiste = usuarios.find(u => u.email === email);
+    if (usuarioExiste) {
+      return res.json({ msg: "E-mail já cadastrado" });
+    }
+
     const salt = await bcrypt.genSalt(12);
-    const hashSenha = await bcrypt.hash(senha, salt);//Hash da senha do usuario
+    const hashSenha = await bcrypt.hash(senha, salt);
 
     const codigo = crypto.randomInt(100000, 999999).toString();
-    const hashCodigo = await bcrypt.hash(codigo, 10);//Hash do codigo
+    const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
-    const expiraEm = new Date(Date.now() + 15 * 60 * 1000);//o codigo se expira em 15 min 
+    // Salvar usuário em memória
+    const novoUsuario = {
+      id: usuarios.length + 1,
+      nome_completo,
+      data_nascimento,
+      cpf,
+      telefone,
+      email,
+      senha: hashSenha,
+      verificado: false,
+      data_cadastro: new Date()
+    };
 
-    db.query(
-      `INSERT INTO tb_usuarios 
-      (Nome_completo, Data_nascimento, Cpf, Telefone, Email, Senha, Data_cadastro,
-       verificado, codigo_verificacao, codigo_expira_em) 
-      VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?)`,
-      [nome_completo, data_nascimento, cpf, telefone, email,
-        hashSenha, 0, hashCodigo, expiraEm], (erro) => {
-          if (erro) {
-            return res.json({ msg: "Erro ao cadastrar usuário", erro });
-          }
-          const htmlMensagem = `
-          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
-            <div style="text-align: center;">
-              <img src="blob:https://web.whatsapp.com/8240baf0-75ae-4e88-9a86-3d11694df1bd" alt="Logo do Sistema" style="width: 120px; margin-bottom: 20px;" />
-            </div>
-            <h2 style="color: #2E86C1;">Olá ${nome_completo}!</h2>
-            <p>Seu código de verificação é:</p>
-            <p style="font-size: 24px; font-weight: bold; color: #E67E22;">${codigo}</p>
-            <p>Ele expira em <strong>15 minutos</strong>. ⏰</p>
-            <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #999;">Se você não solicitou este código, ignore este e-mail.</p>
-          </div>
-        `;
-          // Envia o código por e-mail
-          transporter.sendMail(
-            {
-              from: "calma air <ventiladorescalmarair@gmail.com>",
-              to: email,
-              subject: "Verifique seu cadastro",
-              html: htmlMensagem
-            },
-            (err) => {
-              if (err) {
-                return res.json({ msg: "Erro ao enviar e-mail", err });
-              }
-              res.json({ msg: "Usuário cadastrado! Verifique seu e-mail." });
-            });
-        });
+    usuarios.push(novoUsuario);
+    codigosVerificacao[email] = {
+      codigo,
+      expiraEm
+    };
+
+    console.log(`Código de verificação para ${email}: ${codigo}`);
+    
+    res.json({ msg: "Usuário cadastrado! Código de verificação: " + codigo });
   } catch (err) {
     res.json({ msg: "Erro no servidor", err });
   }
@@ -85,123 +77,93 @@ app.post("/cadastro", async (req, res) => {
 app.post("/verificar-email", async (req, res) => {
   const { email, codigo } = req.body;
 
-  db.query("SELECT * FROM tb_usuarios WHERE Email = ?", [email], async (erro, results) => {
-    if (erro) return res.json({ msg: "Erro no servidor", erro });
-    if (results.length === 0) return res.json({ msg: "Usuário não encontrado" });
+  const usuario = usuarios.find(u => u.email === email);
+  if (!usuario) {
+    return res.json({ msg: "Usuário não encontrado" });
+  }
 
-    const usuario = results[0];
+  if (usuario.verificado) {
+    return res.json({ msg: "E-mail já verificado" });
+  }
 
+  const codigoInfo = codigosVerificacao[email];
+  if (!codigoInfo) {
+    return res.json({ msg: "Código não encontrado" });
+  }
 
-    if (usuario.verificado === 1) {
-      return res.json({ msg: "E-mail já verificado" });
-    }// Verifica se já foi confirmado
+  if (new Date() > codigoInfo.expiraEm) {
+    return res.json({ msg: "Código expirado, peça um novo" });
+  }
 
+  if (codigo !== codigoInfo.codigo) {
+    return res.json({ msg: "Código inválido" });
+  }
 
-    if (new Date() > new Date(usuario.codigo_expira_em)) {
-      return res.json({ msg: "Código expirado, peça um novo" });
-    }// Verifica expiração do codigo
-
-    const valido = await bcrypt.compare(codigo, usuario.codigo_verificacao);// Confere hash do codigo
-    if (!valido) {
-      return res.json({ msg: "Código inválido" });
-    }
-
-    db.query(
-      "UPDATE tb_usuarios SET verificado = 1, codigo_verificacao = NULL, codigo_expira_em = NULL WHERE Email = ?",
-      [email],
-      (err2) => {
-        if (err2) return res.json({ msg: "Erro ao atualizar usuário", err2 });
-        res.json({ msg: "E-mail verificado com sucesso!" });
-      }
-    );// Marca como verificado
-  });
+  // Marcar como verificado
+  usuario.verificado = true;
+  delete codigosVerificacao[email];
+  
+  res.json({ msg: "E-mail verificado com sucesso!" });
 }); // fim do endpoint verificar email
 
 
 //endpoint fazer login
-app.post('/logar', (req, res) => {
+app.post('/logar', async (req, res) => {
   const { email, senha } = req.body;
-  db.query("SELECT * FROM tb_usuarios WHERE Email = ?", [email],
-    async (erro, results) => {
-      if (erro) {
-        return res.json({ msg: "Erro no servidor", erro });
+  
+  const usuario = usuarios.find(u => u.email === email);
+  if (!usuario) {
+    return res.json({ msg: "Usuário não encontrado" });
+  }
+
+  if (!usuario.verificado) {
+    return res.json({ msg: "Confirme seu e-mail antes de fazer login." });
+  }
+
+  try {
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaValida) {
+      return res.json({ msg: "Senha incorreta" });
+    }
+
+    req.session.usuarioLogado = usuario.id;
+    res.json({ 
+      msg: "Login bem-sucedido",
+      usuario: {
+        id: usuario.id,
+        nome: usuario.nome_completo,
+        email: usuario.email
       }
-      if (results.length === 0) {
-        return res.json({ msg: "Usuário não encontrado" });
-      }
-
-      const usuario = results[0];
-
-      if (usuario.verificado === 0) {
-      return res.json({ msg: "Confirme seu e-mail antes de fazer login." });
-      }
-
-      try {
-        const senhaValida = await bcrypt.compare(senha, usuario.Senha);
-        if (!senhaValida) {
-          return res.json({ msg: "Senha incorreta" });
-        }
-
-        req.session.usuarioLogado = usuario.IdUsuario;
-
-        res.json({ msg: "Login bem-sucedido" });
-      } catch (erro) {
-        return res.json({ msg: "Erro ao validar senha", erro });
-      }
-    })
+    });
+  } catch (erro) {
+    return res.json({ msg: "Erro ao validar senha", erro });
+  }
 })//fim do endpoint /logar
 
 // endpoint para pedir novo código
 app.post("/novo-codigo", async (req, res) => {
   const { email } = req.body;
 
-  db.query("SELECT * FROM tb_usuarios WHERE Email = ?", [email], async (erro, results) => {
-    if (erro) return res.json({ msg: "Erro no servidor", erro });
-    if (results.length === 0) return res.json({ msg: "Usuário não encontrado" });
+  const usuario = usuarios.find(u => u.email === email);
+  if (!usuario) {
+    return res.json({ msg: "Usuário não encontrado" });
+  }
 
-    const usuario = results[0];
+  if (usuario.verificado) {
+    return res.json({ msg: "Usuário já verificado, não precisa de novo código." });
+  }
 
-    if (usuario.verificado === 1) {
-      return res.json({ msg: "Usuário já verificado, não precisa de novo código." });
-    }
+  // Gerar novo código
+  const codigo = crypto.randomInt(100000, 999999).toString();
+  const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
 
-    // Gerar novo código
-    const codigo = crypto.randomInt(100000, 999999).toString();
-    const hashCodigo = await bcrypt.hash(codigo, 10);
-    const expiraEm = new Date(Date.now() + 15 * 60 * 1000);
+  codigosVerificacao[email] = {
+    codigo,
+    expiraEm
+  };
 
-    // Atualizar no banco
-    db.query(
-      "UPDATE tb_usuarios SET codigo_verificacao = ?, codigo_expira_em = ? WHERE Email = ?",
-      [hashCodigo, expiraEm, email],
-      (err2) => {
-        if (err2) return res.json({ msg: "Erro ao gerar novo código", err2 });
-
-        const htmlMensagem = `
-          <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
-            <h2 style="color: #2E86C1;">Olá ${usuario.Nome_completo}!</h2>
-            <p>Seu novo código de verificação é:</p>
-            <p style="font-size: 24px; font-weight: bold; color: #E67E22;">${codigo}</p>
-            <p>Ele expira em <strong>15 minutos</strong>. ⏰</p>
-            <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #999;">Se você não solicitou este código, ignore este e-mail.</p>
-          </div>
-        `;
-
-        transporter.sendMail(
-          {
-            from: "calma air <ventiladorescalmarair@gmail.com>",
-            to: email,
-            subject: "Novo código de verificação",
-            html: htmlMensagem
-          },
-          (err3) => {
-            if (err3) return res.json({ msg: "Erro ao enviar e-mail", err3 });
-            res.json({ msg: "Novo código enviado para seu e-mail." });
-          }
-        );
-      });
-  });
+  console.log(`Novo código para ${email}: ${codigo}`);
+  res.json({ msg: "Novo código gerado: " + codigo });
 });// fim do endpoint /novo-codigo
 
 
@@ -226,8 +188,8 @@ app.get('/logout', (req, res) => {
 // fim do endpoint /logout 
 
 // pagina principal
-app.get('/', verificarAutenticado, (req, res) => {
-  res.sendFile(path.join(__dirname, 'privado', 'index.html'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 //fim do endpoint principal
 
